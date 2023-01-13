@@ -1,11 +1,42 @@
-import { Endereco } from './endereco';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { EnderecoEntity } from './endereco.entity';
 
-export class User {
+@Entity({ name: 'usuarios' })
+export class UserEntity {
+  @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ length: 255 })
   nome: string;
+
+  @Column({ length: 255, default: 'www.suafoto.com.br' })
   urlFoto: string;
+
+  @Column({ length: 255, unique: true })
   email: string;
+
+  @Column({ length: 255 })
   senha: string;
-  telefone: string;
-  endereco: Endereco;
+
+  @Column({ length: 255 })
+  confirmacaoSenha: string;
+
+  @Column()
+  telefone: number;
+
+  @OneToOne(() => EnderecoEntity, (user) => UserEntity, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'endereco_id' })
+  endereco: EnderecoEntity;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
