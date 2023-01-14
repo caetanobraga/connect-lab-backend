@@ -17,7 +17,7 @@ import { HttpStatus } from '@nestjs/common/enums';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('/cadastro')
   async create(@Body() user: CreateUserDto) {
     try {
       return await this.usersService.create(user);

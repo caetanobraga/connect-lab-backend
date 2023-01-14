@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EnderecoEntity } from './endereco.entity';
+import * as bcrypt from 'bcrypt';
 
 @Entity({ name: 'usuarios' })
 export class UserEntity {
@@ -25,18 +26,23 @@ export class UserEntity {
   @Column({ length: 255 })
   senha: string;
 
-  @Column({ length: 255 })
-  confirmacaoSenha: string;
-
   @Column()
   telefone: number;
 
-  @OneToOne(() => EnderecoEntity, (user) => UserEntity, {
+  @OneToOne(() => EnderecoEntity, () => UserEntity, {
     cascade: true,
   })
   @JoinColumn({ name: 'endereco_id' })
   endereco: EnderecoEntity;
 
+  @Column({ nullable: false })
+  salt: string;
+
   @CreateDateColumn()
   createdAt: Date;
+
+  async checkPassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.senha;
+  }
 }

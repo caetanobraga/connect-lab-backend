@@ -16,7 +16,7 @@ export class CreateUserDto {
   readonly nome: string;
 
   @IsUrl()
-  readonly urlFoto: string | 'www.suafoto.com.br';
+  readonly urlFoto: string = 'www.suafoto.com.br';
 
   @IsNotEmpty()
   @IsEmail()

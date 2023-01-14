@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsNumberString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsNotEmpty, IsNumberString, MinLength } from 'class-validator';
 
 export class EnderecoDto {
   @IsNotEmpty()

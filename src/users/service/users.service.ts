@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -13,9 +14,15 @@ export class UsersService {
   async create(usuario: CreateUserDto) {
     return new Promise(async (resolve, reject) => {
       try {
-        const userToSave = await this.userRepository.create(usuario);
-        const res = await this.userRepository.save(userToSave);
-        resolve(res);
+        const { senha } = usuario;
+
+        const salt = await bcrypt.genSalt();
+        const password = await this.hashPassword(senha, salt);
+        const user = { ...usuario, salt };
+        user.senha = password;
+        delete user.confirmacaoSenha;
+        const usuarioCriado = await this.userRepository.save(user);
+        resolve({ mensagem: 'usuario criado com sucesso' });
       } catch (error) {
         reject({ code: error.code, detail: error.detail });
       }
@@ -34,6 +41,24 @@ export class UsersService {
     if (!userToReturn) return { message: 'usuario não encontrado' };
     return userToReturn;
   }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
+  }
+
+  // async trocarASenha(login: trocarSenhaDto id: number, senha: string) {
+  //   const user = await this.userRepository.findOne({
+  //     where: {
+  //       id: id,
+  //     },
+  //   });
+
+  //   user.senha = await this.hashPassword(senha, user.salt);
+
+  //   await this.userRepository.save(user);
+
+  //   return;
+  // }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
