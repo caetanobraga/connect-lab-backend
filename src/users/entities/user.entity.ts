@@ -49,7 +49,7 @@ export class UserEntity {
   @OneToMany(() => UserDevicesEntity, (devices) => devices.user, {
     cascade: true,
   })
-  userDevices: UserDevicesEntity[];
+  user: UserDevicesEntity[];
 
   async checkPassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
@@ -57,9 +57,9 @@ export class UserEntity {
   }
 
   addDevice(device: UserDevicesEntity) {
-    if (this.userDevices == null) {
-      this.userDevices = new Array<UserDevicesEntity>();
+    if (this.user == null) {
+      this.user = new Array<UserDevicesEntity>();
     }
-    this.userDevices.push(device);
+    this.user.push(device);
   }
 }

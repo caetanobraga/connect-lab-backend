@@ -18,4 +18,16 @@ export class DeviceEntity {
 
   @Column({ length: 255 })
   urlFoto: string;
+
+  @OneToMany(() => UserDevicesEntity, (devices) => devices.user, {
+    cascade: true,
+  })
+  device: UserDevicesEntity[];
+
+  addDevice(device: UserDevicesEntity) {
+    if (this.device == null) {
+      this.device = new Array<UserDevicesEntity>();
+    }
+    this.device.push(device);
+  }
 }

@@ -79,17 +79,28 @@ export class UsersService {
         const user: UserEntity = await this.userRepository.findOne({
           where: { id: idUser },
           relations: {
-            userDevices: true,
+            user: true,
           },
         });
-        let deviceASerAdicionado = this.userDevicesRepository.create();
-        deviceASerAdicionado = {
-          ...deviceASerAdicionado,
-          ...deviceSetings,
-          device_id: idDevice,
-        };
-        user.addDevice(deviceASerAdicionado);
-        await this.userRepository.save(user);
+
+        const device: DeviceEntity = await this.deviceRepository.findOne({
+          where: { id: idDevice },
+          relations: {
+            device: true,
+          },
+        });
+
+        let userDevice = this.userDevicesRepository.create();
+
+        userDevice = { ...userDevice, ...deviceSetings };
+
+        userDevice.device = device;
+        userDevice.user = user;
+
+        user.addDevice(userDevice);
+        device.addDevice(userDevice);
+
+        await this.userDevicesRepository.save(userDevice);
 
         resolve({ menssagem: 'Dispositivo adicionado com sucesso!' });
       } catch (error) {
@@ -116,6 +127,43 @@ export class UsersService {
           code: error.code,
           detail: error.detail,
         });
+      }
+    });
+  }
+
+  async findAllDevicesUser(id: number) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await this.userRepository.findOne({
+          where: {
+            id: id,
+          },
+          relations: {
+            user: true,
+          },
+        });
+        resolve(res);
+      } catch (error) {
+        reject({ code: error.code, detail: error.detail });
+      }
+    });
+  }
+
+  async showDeviceDetail(id: number) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await this.userDevicesRepository.findOne({
+          where: {
+            id: id,
+          },
+          relations: {
+            device: true,
+          },
+        });
+
+        resolve(res);
+      } catch (error) {
+        reject({ code: error.code, detail: error.detail });
       }
     });
   }

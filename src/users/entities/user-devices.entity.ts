@@ -34,11 +34,16 @@ export class UserDevicesEntity {
   @Column()
   signal: string;
 
-  @Column()
-  device_id: number;
+  // @Column()
+  // device_id: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.userDevices, {
+  @ManyToOne(() => UserEntity, (user) => user.user, {
     onDelete: 'SET NULL',
   })
   user: UserEntity;
+
+  @ManyToOne(() => DeviceEntity, (device) => device.device, {
+    onDelete: 'SET NULL',
+  })
+  device: DeviceEntity;
 }

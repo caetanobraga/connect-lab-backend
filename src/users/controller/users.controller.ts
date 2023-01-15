@@ -53,6 +53,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: number) {
     return this.usersService.findOne(+id);
   }
@@ -64,5 +65,15 @@ export class UsersController {
     @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     return this.usersService.update(+id, updatePasswordDto);
+  }
+
+  @Get('/devices/:id')
+  buscaTodosDispositivosDoUsuario(@Param('id') id: string) {
+    return this.usersService.findAllDevicesUser(+id);
+  }
+
+  @Get('/details/:id')
+  detalhaDispositivo(@Param('id') id: string) {
+    return this.usersService.showDeviceDetail(+id);
   }
 }
