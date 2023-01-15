@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumberString,
+  IsOptional,
   IsUrl,
   Matches,
   MinLength,
@@ -34,7 +35,8 @@ export class CreateUserDto {
 
   @MinLength(8)
   @IsNumberString()
-  readonly telefone: number | null;
+  @IsOptional()
+  readonly telefone: number = null;
 
   @IsNotEmpty()
   @ValidateNested()

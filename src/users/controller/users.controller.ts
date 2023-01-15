@@ -5,15 +5,16 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
-  Query,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
 import { AddDeviceDto } from '../dto/add-device.dto';
+import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth.guard';
+import { UpdatePasswordDto } from '../dto/update-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -32,6 +33,7 @@ export class UsersController {
   }
 
   @Post('/vinculaDevice/:idUser/:idDevice')
+  @UseGuards(JwtAuthGuard)
   async addDevice(
     @Body() deviceSettings: AddDeviceDto,
     @Param('idUser') idUser: number,
@@ -45,6 +47,7 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.usersService.findAll();
   }
@@ -54,13 +57,12 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  update(
+    @Param('id') id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    return this.usersService.update(+id, updatePasswordDto);
   }
 }

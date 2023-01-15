@@ -12,6 +12,7 @@ import {
 import { EnderecoEntity } from './endereco.entity';
 import * as bcrypt from 'bcrypt';
 import { UserDevicesEntity } from './user-devices.entity';
+import { IsOptional } from 'class-validator';
 
 @Entity({ name: 'usuarios' })
 export class UserEntity {
@@ -30,8 +31,8 @@ export class UserEntity {
   @Column({ length: 255 })
   senha: string;
 
-  @Column()
-  telefone: number;
+  @Column({ nullable: true })
+  telefone?: number;
 
   @OneToOne(() => EnderecoEntity, () => UserEntity, {
     cascade: true,

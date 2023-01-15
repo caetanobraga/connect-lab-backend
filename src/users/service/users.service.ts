@@ -1,12 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UserDevicesEntity } from '../entities/user-devices.entity';
 import { DeviceEntity } from 'src/devices/entities/device.entity';
 import { AddDeviceDto } from '../dto/add-device.dto';
+import { UpdatePasswordDto } from '../dto/update-password.dto';
+import { UserToReturnDto } from '../dto/user-to-return.dto';
+import { NOTFOUND } from 'dns';
 
 @Injectable()
 export class UsersService {
@@ -40,12 +42,26 @@ export class UsersService {
     return usersToReturn;
   }
 
-  async findOne(idRecebido: number) {
-    const userToReturn = await this.userRepository.findOne({
+  async findOne(idRecebido: number): Promise<UserToReturnDto> {
+    const user: UserEntity = await this.userRepository.findOne({
       where: { id: idRecebido },
+      relations: {
+        endereco: true,
+      },
     });
 
-    if (!userToReturn) return { message: 'usuario não encontrado' };
+    if (!user) throw new HttpException('message', HttpStatus.NOT_FOUND);
+
+    const userToReturn: UserToReturnDto = {
+      urlFoto: user.urlFoto,
+      nome: user.nome,
+      email: user.email,
+      telefone: user.telefone ?? user.telefone,
+      endereco: user.endereco,
+    };
+
+    if (userToReturn.telefone === null) delete userToReturn.telefone;
+
     return userToReturn;
   }
 
@@ -82,11 +98,25 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  async update(idUser: number, updatePassword: UpdatePasswordDto) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user: UserEntity = await this.userRepository.findOne({
+          where: { id: idUser },
+        });
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+        const novaSenha = await this.hashPassword(
+          updatePassword.senha,
+          user.salt,
+        );
+        await this.userRepository.update({ id: idUser }, { senha: novaSenha });
+        resolve({ mensagem: 'Senha alterada com sucesso!' });
+      } catch (error) {
+        reject({
+          code: error.code,
+          detail: error.detail,
+        });
+      }
+    });
   }
 }
