@@ -1,6 +1,4 @@
-import { Type } from 'class-transformer';
-import { IsNotEmpty, ValidateNested } from 'class-validator';
-import { InfoDto } from './create-device-info.dto';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateDeviceDto {
   @IsNotEmpty()
@@ -14,9 +12,4 @@ export class CreateDeviceDto {
 
   @IsNotEmpty()
   readonly urlFoto: string;
-
-  @IsNotEmpty()
-  @ValidateNested()
-  @Type(() => InfoDto)
-  readonly info: InfoDto;
 }

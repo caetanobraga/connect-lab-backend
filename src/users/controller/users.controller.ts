@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { HttpException } from '@nestjs/common/exceptions';
 import { HttpStatus } from '@nestjs/common/enums';
+import { AddDeviceDto } from '../dto/add-device.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,6 +29,19 @@ export class UsersController {
       console.log(err);
       throw new HttpException({ reason: err }, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @Post('/vinculaDevice/:idUser/:idDevice')
+  async addDevice(
+    @Body() deviceSettings: AddDeviceDto,
+    @Param('idUser') idUser: number,
+    @Param('idDevice') idDevice: number,
+  ) {
+    return await this.usersService.addDeviceParaUser(
+      +idUser,
+      +idDevice,
+      deviceSettings,
+    );
   }
 
   @Get()

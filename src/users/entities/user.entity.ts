@@ -3,11 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EnderecoEntity } from './endereco.entity';
 import * as bcrypt from 'bcrypt';
+import { UserDevicesEntity } from './user-devices.entity';
 
 @Entity({ name: 'usuarios' })
 export class UserEntity {
@@ -41,8 +45,20 @@ export class UserEntity {
   @CreateDateColumn()
   createdAt: Date;
 
+  @OneToMany(() => UserDevicesEntity, (devices) => devices.user, {
+    cascade: true,
+  })
+  userDevices: UserDevicesEntity[];
+
   async checkPassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
     return hash === this.senha;
+  }
+
+  addDevice(device: UserDevicesEntity) {
+    if (this.userDevices == null) {
+      this.userDevices = new Array<UserDevicesEntity>();
+    }
+    this.userDevices.push(device);
   }
 }

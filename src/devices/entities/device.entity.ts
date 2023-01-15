@@ -1,11 +1,6 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { InfoEntity } from './info.entity';
+import { UserDevicesEntity } from 'src/users/entities/user-devices.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { OneToMany } from 'typeorm/decorator/relations/OneToMany';
 
 @Entity({ name: 'dispositivos' })
 export class DeviceEntity {
@@ -23,10 +18,4 @@ export class DeviceEntity {
 
   @Column({ length: 255 })
   urlFoto: string;
-
-  @OneToOne(() => InfoEntity, () => DeviceEntity, {
-    cascade: true,
-  })
-  @JoinColumn({ name: 'endereco_id' })
-  info: InfoEntity;
 }
