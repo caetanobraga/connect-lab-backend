@@ -2,12 +2,9 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   Post,
   Request,
   UseGuards,
-  Headers,
 } from '@nestjs/common';
 import { LoginDto } from 'src/users/dto/login.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';

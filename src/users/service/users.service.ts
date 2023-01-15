@@ -15,13 +15,12 @@ export class UsersService {
     return new Promise(async (resolve, reject) => {
       try {
         const { senha } = usuario;
-
         const salt = await bcrypt.genSalt();
         const password = await this.hashPassword(senha, salt);
         const user = { ...usuario, salt };
         user.senha = password;
         delete user.confirmacaoSenha;
-        const usuarioCriado = await this.userRepository.save(user);
+        await this.userRepository.save(user);
         resolve({ mensagem: 'usuario criado com sucesso' });
       } catch (error) {
         reject({ code: error.code, detail: error.detail });
