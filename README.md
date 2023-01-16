@@ -1,73 +1,258 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
+npm install - instalar o projeto
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+npm run seed - popular tabelas de devices
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+npm run:dev - executar o projeto
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Endpoints disponiveis
 
-```bash
-$ npm install
+### Criar um usuário:
+
+```
+@Post('/cadastro')
+
+Body: {
+	"nome":"teste",
+	"email":"teste@gmail.com",
+	"urlFoto":"www.google.com",
+	"senha":"Cidade@01",
+	"confirmacaoSenha":"Cidade@01",
+	"endereco":{
+		"CEP":"92425678",
+		"endereco":"av imigrantes",
+		"numero":"197",
+		"bairro":"sao jose",
+		"cidade":"canoas",
+		"estado":"RS"
+	}
+}
 ```
 
-## Running the app
+**Resultado:**
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+{
+	"mensagem": "usuario criado com sucesso"
+}
 ```
 
-## Test
+### Efetuar Login:
 
-```bash
-# unit tests
-$ npm run test
+```
+POST: http://localhost:3000/auth/login
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+Body: {
+	"email": "usuario2@teste.com.br",
+	"senha": "Cidade@01"
+}
 ```
 
-## Support
+**Resultado:**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+{
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInByaW1laXJvTm9tZSI6ImNhZXRhbm8iLCJ1cmxGb3RvIjoid3d3Lmdvb2dsZS5jb20iLCJlbWFpbCI6ImNhZXRhbm9AZ21haWwuY29tIiwiaWF0IjoxNjczODIyODAzLCJleHAiOjE2NzM4Mjg4MDN9.3UotgG8V35QI11tREr07NgDov-nQQgLlXr9hjZjcH-4"
+}
+```
 
-## Stay in touch
+### Buscar um usuário:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+GET: localhost:3000/users/:id
+Headers: {
+	"Authorization": "Bearer token"
+}
+```
 
-## License
+**Resultado:**
 
-Nest is [MIT licensed](LICENSE).
+```
+{
+	"urlFoto": "www.google.com",
+	"nome": "teste",
+	"email": "sca5esssassa3ddfscddstanssaga@gmail8.com",
+	"endereco": {
+		"id": 9,
+		"CEP": 92425678,
+		"endereco": "av imigrantes",
+		"numero": 197,
+		"bairro": "sao jose",
+		"cidade": "canoas",
+		"estado": "RS",
+		"complemento": null
+	}
+}
+```
+
+### Buscar devices disponiveis
+
+```
+PUT: http://localhost:3000/devices
+Headers: {
+	"Authorization": "Bearer token"
+}
+```
+
+**Resultado:**
+
+```
+[
+	{
+		"id": 73,
+		"nome": "Lâmpada LED",
+		"type": "Energia",
+		"madeBy": "Intelbras",
+		"urlFoto": "https://intelbras.vteximg.com.br/arquivos/ids/160115-1000-1000/ews_407_front_cor.jpg?v=637564221001370000"
+	},
+	{
+		"id": 74,
+		"nome": "Interruptor conector inteligente",
+		"type": "Energia",
+		"madeBy": "Intelbras",
+		"urlFoto": "https://intelbras.vteximg.com.br/arquivos/ids/161376-1000-1000/ews_301_front_cima.jpg?v=637581675693070000"
+	},
+	{
+		"id": 75,
+		"nome": "Interruptor inteligente soquete",
+		"type": "Energia",
+		"madeBy": "Intelbras",
+		"urlFoto": "https://intelbras.vteximg.com.br/arquivos/ids/160121-800-800/ews_400_front2.jpg?v=637564240561700000"
+	},
+	...
+```
+
+### Buscar dispositivos do usuario
+
+```
+GET: localhost:3000/users/devices/:id
+Headers: {
+	"Authorization": "Bearer token"
+}
+```
+
+**Resultado:**
+
+```
+{
+	"id": 10,
+	"nome": "caetano",
+	"urlFoto": "www.google.com",
+	"email": "caetano@gmail.com",
+	"senha": "$2b$10$0ayqgbMtV4Ock9osO1C2U.RU2fJvvpsN7jZBcuWW0nX9npqUoHv9G",
+	"telefone": null,
+	"salt": "$2b$10$0ayqgbMtV4Ock9osO1C2U.",
+	"createdAt": "2023-01-15T22:45:31.467Z",
+	"user": [
+		{
+			"id": 59,
+			"local": "fabrica",
+			"is_on": true,
+			"room": "sala",
+			"virtual_id": "Gremio@01a",
+			"ip_address": "192.168.0.10",
+			"mac_address": "B0-52-16-25-15-C0",
+			"signal": "-30 Dbmv"
+		},
+		{
+			"id": 60,
+			"local": "fabrica",
+			"is_on": true,
+			"room": "sala",
+			"virtual_id": "Gremio@01a",
+			"ip_address": "192.168.0.10",
+			"mac_address": "B0-52-16-25-15-C0",
+			"signal": "-30 Dbmv"
+		}
+	]
+}
+```
+
+
+
+### Detalha dispositivo
+
+```
+GET: localhost:3000/users/details/:id_dispositivo
+Headers: {
+	"Authorization": "Bearer token"
+}
+```
+
+**Resultado:**
+
+```
+{
+	"id": 60,
+	"local": "fabrica",
+	"is_on": true,
+	"room": "sala",
+	"virtual_id": "Gremio@01a",
+	"ip_address": "192.168.0.10",
+	"mac_address": "B0-52-16-25-15-C0",
+	"signal": "-30 Dbmv",
+	"device": {
+		"id": 75,
+		"nome": "Interruptor inteligente soquete",
+		"type": "Energia",
+		"madeBy": "Intelbras",
+		"urlFoto": "https://intelbras.vteximg.com.br/arquivos/ids/160121-800-800/ews_400_front2.jpg?v=637564240561700000"
+	}
+}
+```
+
+### Adicionar dispositivos ao usuário:
+
+```
+POST: localhost:3000/users/vinculaDevice/:idUsuario/:idDispositivo
+Headers: {
+	"Authorization": "Bearer token"
+}
+
+Body : 
+{
+	"local":"fabrica",
+	"is_on":true,
+	"room":"sala",
+	"virtual_id":"Gremio@01a",
+	"ip_address":"192.168.0.10",
+	"mac_address":"B0-52-16-25-15-C0",
+	"signal":"-30 Dbmv"
+}
+
+```
+
+**Resultado:**
+
+```
+{
+	"menssagem": "Dispositivo adicionado com sucesso!"
+}
+```
+
+### Alteracao de senha
+
+```
+PUT: localhost:3000/users/:id
+Headers: {
+	"Authorization": "Bearer token"
+}
+
+Body :{
+	"senha":"Cidade@04",
+	"confirmacaoSenha":"Cidade@04"
+}
+```
+
+**Resultado:**
+
+```
+{
+	"mensagem": "Senha alterada com sucesso!"
+}
+```
+

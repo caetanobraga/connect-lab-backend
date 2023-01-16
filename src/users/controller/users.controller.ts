@@ -68,11 +68,13 @@ export class UsersController {
   }
 
   @Get('/devices/:id')
+  @UseGuards(JwtAuthGuard)
   buscaTodosDispositivosDoUsuario(@Param('id') id: string) {
     return this.usersService.findAllDevicesUser(+id);
   }
 
   @Get('/details/:id')
+  @UseGuards(JwtAuthGuard)
   detalhaDispositivo(@Param('id') id: string) {
     return this.usersService.showDeviceDetail(+id);
   }

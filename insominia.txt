@@ -1,0 +1,64 @@
+curl --request GET \
+  --url http://localhost:3000/users/9
+curl --request GET \
+  --url http://localhost:3000/devices
+curl --request GET \
+  --url http://localhost:3000/users
+curl --request GET \
+  --url http://localhost:3000/auth/verificaSessao \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicHJpbWVpcm9Ob21lIjoiY2FldGFubyIsInVybEZvdG8iOiJ3d3cuZ29vZ2xlLmNvbSIsImVtYWlsIjoic2NhNWVzc3NhYTNkZGZzY2Rkc3RhbnNzYWdhQGdtYWlsOC5jb20iLCJpYXQiOjE2NzM4MTQwOTEsImV4cCI6MTY3MzgyMDA5MX0.gMdCEn-d8WFaZPKe0Intq4fvHqER92EBRNTEN_pNhxk'
+curl --request GET \
+  --url http://localhost:3000/users/devices/10 \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicHJpbWVpcm9Ob21lIjoiY2FldGFubyIsInVybEZvdG8iOiJ3d3cuZ29vZ2xlLmNvbSIsImVtYWlsIjoic2NhNWVzc3NhYTNkZGZzY2Rkc3RhbnNzYWdhQGdtYWlsOC5jb20iLCJpYXQiOjE2NzM4MTQwOTEsImV4cCI6MTY3MzgyMDA5MX0.gMdCEn-d8WFaZPKe0Intq4fvHqER92EBRNTEN_pNhxk'
+curl --request GET \
+  --url http://localhost:3000/users/details/63 \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicHJpbWVpcm9Ob21lIjoiY2FldGFubyIsInVybEZvdG8iOiJ3d3cuZ29vZ2xlLmNvbSIsImVtYWlsIjoic2NhNWVzc3NhYTNkZGZzY2Rkc3RhbnNzYWdhQGdtYWlsOC5jb20iLCJpYXQiOjE2NzM4MTQwOTEsImV4cCI6MTY3MzgyMDA5MX0.gMdCEn-d8WFaZPKe0Intq4fvHqER92EBRNTEN_pNhxk'
+curl --request GET \
+  --url http://localhost:3000/users/details/63 \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicHJpbWVpcm9Ob21lIjoiY2FldGFubyIsInVybEZvdG8iOiJ3d3cuZ29vZ2xlLmNvbSIsImVtYWlsIjoic2NhNWVzc3NhYTNkZGZzY2Rkc3RhbnNzYWdhQGdtYWlsOC5jb20iLCJpYXQiOjE2NzM4MTQwOTEsImV4cCI6MTY3MzgyMDA5MX0.gMdCEn-d8WFaZPKe0Intq4fvHqER92EBRNTEN_pNhxk'
+curl --request POST \
+  --url http://localhost:3000/users/cadastro \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"nome":"caetano",
+	"email":"caetano@gmail.com",
+	"urlFoto":"www.google.com",
+	"senha":"G01",
+	"confirmacaoSenha":"@01",
+	"endereco":{
+		"CEP":"92425678",
+		"endereco":"av imigrantes",
+		"numero":"197",
+		"bairro":"sao jose",
+		"cidade":"canoas",
+		"estado":"RS"
+	}
+}'
+curl --request POST \
+  --url http://localhost:3000/users/vinculaDevice/10/75 \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInByaW1laXJvTm9tZSI6ImNhZXRhbm8iLCJ1cmxGb3RvIjoid3d3Lmdvb2dsZS5jb20iLCJlbWFpbCI6ImNhZXRhbm9AZ21haWwuY29tIiwiaWF0IjoxNjczODIyODAzLCJleHAiOjE2NzM4Mjg4MDN9.3UotgG8V35QI11tREr07NgDov-nQQgLlXr9hjZjcH-4' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"local":"fabrica",
+	"is_on":true,
+	"room":"sala",
+	"virtual_id":"Ga",
+	"ip_address":"192.168.0.10",
+	"mac_address":"B0-52-16-25-15-C0",
+	"signal":"-30 Dbmv"
+}'
+curl --request POST \
+  --url http://localhost:3000/auth/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"email":"caetano@gmail.com",
+	"senha":"Gr01"
+}'
+curl --request PUT \
+  --url http://localhost:3000/users/4 \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicHJpbWVpcm9Ob21lIjoiY2FldGFubyIsInVybEZvdG8iOiJ3d3cuZ29vZ2xlLmNvbSIsImVtYWlsIjoic2NhNWVzc3NhYTNkZGZzY2Rkc3RhbnNzYWdhQGdtYWlsOC5jb20iLCJpYXQiOjE2NzM4MTY4MjUsImV4cCI6MTY3MzgyMjgyNX0.DXISQImPNYEYd7UEkNcDN_DRaPcff6P_IiHJOXdzkwE' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"senha":"4",
+	"confirmacaoSenha":"Go@04"
+}'

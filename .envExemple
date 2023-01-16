@@ -1,0 +1,8 @@
+# POSTGRESQL
+DB_DIALECT=tipo de banco
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=user db
+DB_PASS= senha db
+DB_NAME= nome db
+JWT_SECRET= secret do jwt
